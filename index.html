@@ -5,12 +5,121 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Modern Job Listing Design</title>
-      <script type="module" crossorigin src="./assets/index-RnOKyxGN.js"></script>
-      <link rel="stylesheet" crossorigin href="./assets/index-5mzWwaxx.css">
+      <script type="module" crossorigin src="./assets/index-s59om0Yj.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-Coq4vXBm.css">
+
+      <style>
+        /* Fix 1: Button fully clickable */
+        button[type="button"].cursor-pointer {
+          pointer-events: auto !important;
+          cursor: pointer !important;
+        }
+        button[type="button"].cursor-pointer > * {
+          pointer-events: none !important;
+        }
+
+        /* Fix 2: Email link clearly interactive */
+        a[href*="mail.google.com"] {
+          pointer-events: auto !important;
+          cursor: pointer !important;
+          position: relative !important;
+          z-index: 5 !important;
+        }
+        /* Also target p containing email text */
+        .text-slate-500 a {
+          pointer-events: auto !important;
+          cursor: pointer !important;
+          position: relative !important;
+          z-index: 5 !important;
+        }
+      </style>
     </head>
 
     <body>
       <div id="root"></div>
+
+      <script>
+        function applyFixes() {
+          // ── FIX 1: Full button click area ──
+          document.querySelectorAll('button[type="button"]').forEach(btn => {
+            if (btn.textContent.includes('резюме')) {
+              btn.style.cssText += ';pointer-events:auto!important;cursor:pointer!important;';
+              Array.from(btn.children).forEach(child => {
+                child.style.pointerEvents = 'none';
+              });
+            }
+          });
+
+          // ── FIX 2: Email link ──
+          document.querySelectorAll('a').forEach(a => {
+            if (a.href && a.href.includes('mail.google.com')) {
+              a.style.cssText += ';pointer-events:auto!important;cursor:pointer!important;position:relative!important;z-index:10!important;display:inline-flex!important;';
+            }
+          });
+
+          // ── FIX 3: О нашей работе — merge 4 info cards into 1 wrapper ──
+          // Find both 2-col grids that hold the info cards (identified by w-9 icon div)
+          const cardGrids = Array.from(document.querySelectorAll('.grid.gap-4')).filter(g => {
+            return g.querySelector('.w-9') && g.querySelectorAll('.rounded-2xl').length >= 1;
+          });
+
+          if (cardGrids.length >= 2 && !document.querySelector('.unified-cards')) {
+            const g1 = cardGrids[0];
+            const g2 = cardGrids[1];
+            const parent = g1.parentNode;
+
+            // Wrap both grids in one unified card
+            const wrapper = document.createElement('div');
+            wrapper.className = 'unified-cards';
+            wrapper.style.cssText = `
+              border-radius: 20px;
+              border: 1px solid rgba(255,255,255,0.1);
+              background: rgba(255,255,255,0.04);
+              overflow: hidden;
+            `;
+
+            parent.insertBefore(wrapper, g1);
+            wrapper.appendChild(g1);
+            wrapper.appendChild(g2);
+
+            // Remove individual card borders/backgrounds and tighten layout
+            wrapper.querySelectorAll('.rounded-2xl').forEach(card => {
+              card.style.borderRadius = '0';
+              card.style.border = 'none';
+              card.style.background = 'transparent';
+            });
+
+            // Internal separators
+            // Right border on left-column cards
+            g1.style.borderBottom = '1px solid rgba(255,255,255,0.07)';
+            [g1, g2].forEach(grid => {
+              const cards = grid.querySelectorAll('.rounded-2xl');
+              if (cards.length === 2) {
+                cards[0].style.borderRight = '1px solid rgba(255,255,255,0.07)';
+              }
+            });
+
+            // Remove space-y gap that was between the two grids
+            g1.style.marginBottom = '0';
+            g2.style.marginTop = '0';
+          }
+        }
+
+        // Watch for React render
+        const obs = new MutationObserver(() => {
+          if (document.querySelector('button[type="button"]')) {
+            applyFixes();
+          }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+
+        // Re-apply on user interaction (tab switches reveal new panels)
+        document.addEventListener('click', () => setTimeout(applyFixes, 400));
+
+        // Fallback timers
+        setTimeout(applyFixes, 600);
+        setTimeout(applyFixes, 1500);
+        setTimeout(applyFixes, 3000);
+      </script>
     </body>
   </html>
-  
