@@ -1,0 +1,63 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Modern Job Listing Design</title>
+      <script type="module" crossorigin src="./assets/index-s59om0Yj.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-Coq4vXBm.css">
+
+      <style>
+        /* Ensure anchor button looks/behaves identical to original button */
+        a.cursor-pointer[href*="mail.google"], a[href*="mail.google"] {
+          pointer-events: auto !important;
+          cursor: pointer !important;
+        }
+        /* О нашей работе — merge 4 cards into one unified block */
+      </style>
+    </head>
+    <body>
+      <div id="root"></div>
+
+      <script>
+        // Fix О нашей работе: wrap 4 cards in single container
+        function fixWorkCards() {
+          const allGrids = Array.from(document.querySelectorAll('.grid.gap-4')).filter(g =>
+            g.querySelector('.w-9') && g.querySelectorAll('[class*="rounded-2xl"]').length >= 1
+          );
+          if (allGrids.length >= 2 && !document.querySelector('.unified-work-cards')) {
+            const g1 = allGrids[0];
+            const g2 = allGrids[1];
+            if (g1.parentNode !== g2.parentNode) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'unified-work-cards';
+            wrapper.style.cssText = 'border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);overflow:hidden;';
+
+            g1.parentNode.insertBefore(wrapper, g1);
+            wrapper.appendChild(g1);
+            wrapper.appendChild(g2);
+
+            wrapper.querySelectorAll('[class*="rounded-2xl"]').forEach(card => {
+              card.style.borderRadius = '0';
+              card.style.border = 'none';
+              card.style.background = 'transparent';
+            });
+
+            g1.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+            [g1, g2].forEach(grid => {
+              const cards = grid.querySelectorAll('[class*="rounded-2xl"]');
+              if (cards.length >= 2) cards[0].style.borderRight = '1px solid rgba(255,255,255,0.08)';
+            });
+          }
+        }
+
+        const obs = new MutationObserver(() => {
+          if (document.querySelector('.grid.gap-4')) fixWorkCards();
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        setTimeout(fixWorkCards, 800);
+        setTimeout(fixWorkCards, 2000);
+      </script>
+    </body>
+  </html>
