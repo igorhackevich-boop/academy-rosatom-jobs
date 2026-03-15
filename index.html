@@ -1,0 +1,81 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Modern Job Listing Design</title>
+      <script type="module" crossorigin src="./assets/index-s59om0Yj.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-Coq4vXBm.css">
+
+      <style>
+        /* Кнопка должна лежать выше абсолютного оверлея карточки */
+        button.w-full.cursor-pointer {
+          position: relative !important;
+          z-index: 2 !important;
+        }
+
+        /* Email ссылка тоже выше */
+        .text-slate-500 a {
+          position: relative !important;
+          z-index: 2 !important;
+        }
+      </style>
+    </head>
+
+    <body>
+      <div id="root"></div>
+
+      <script>
+        function applyFixes() {
+          // Кнопка — поднять над оверлеем
+          document.querySelectorAll('button[type="button"].w-full').forEach(btn => {
+            btn.style.position = 'relative';
+            btn.style.zIndex = '2';
+          });
+
+          // Email ссылка
+          document.querySelectorAll('a').forEach(a => {
+            if (a.href && a.href.includes('mail.google.com')) {
+              a.style.position = 'relative';
+              a.style.zIndex = '2';
+            }
+          });
+
+          // О нашей работе — объединить 4 карточки в один блок
+          const cardGrids = Array.from(document.querySelectorAll('.grid.gap-4')).filter(g => {
+            return g.querySelector('.w-9') && !g.closest('.unified-cards');
+          });
+
+          if (cardGrids.length >= 2 && !document.querySelector('.unified-cards')) {
+            const g1 = cardGrids[0];
+            const g2 = cardGrids[1];
+            if (g1.parentNode === g2.parentNode) {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'unified-cards';
+              wrapper.style.cssText = 'border-radius:18px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);overflow:hidden;';
+              g1.parentNode.insertBefore(wrapper, g1);
+              wrapper.appendChild(g1);
+              wrapper.appendChild(g2);
+              wrapper.querySelectorAll('.rounded-2xl').forEach(c => {
+                c.style.borderRadius = '0';
+                c.style.border = 'none';
+                c.style.background = 'transparent';
+              });
+              g1.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+              [g1, g2].forEach(grid => {
+                const cards = grid.querySelectorAll('.rounded-2xl');
+                if (cards[0]) cards[0].style.borderRight = '1px solid rgba(255,255,255,0.08)';
+              });
+            }
+          }
+        }
+
+        document.addEventListener('click', () => setTimeout(applyFixes, 200));
+        setTimeout(applyFixes, 600);
+        setTimeout(applyFixes, 1500);
+
+        const obs = new MutationObserver(() => applyFixes());
+        setTimeout(() => obs.observe(document.body, { childList: true, subtree: true }), 400);
+      </script>
+    </body>
+  </html>
