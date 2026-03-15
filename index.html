@@ -1,0 +1,126 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Modern Job Listing Design</title>
+      <script type="module" crossorigin src="./assets/index-s59om0Yj.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-Coq4vXBm.css">
+
+      <style>
+        /* ── Кнопка выше оверлея ── */
+        button.w-full {
+          position: relative !important;
+          z-index: 2 !important;
+        }
+        .text-slate-500 a {
+          position: relative !important;
+          z-index: 2 !important;
+        }
+
+        /* ── Мобильный текст крупнее ── */
+        @media (max-width: 640px) {
+          /* Общий базовый размер */
+          body { font-size: 17px !important; }
+
+          /* Списки задач/требований */
+          .space-y-2\.5 li span,
+          .space-y-3 li span {
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+          }
+
+          /* Теги "Будет плюсом" */
+          .flex.flex-wrap.gap-1\.5 span,
+          .flex.flex-wrap.gap-2 span {
+            font-size: 14px !important;
+            padding: 6px 14px !important;
+          }
+
+          /* Заголовки секций */
+          h4 { font-size: 17px !important; }
+          h5 { font-size: 16px !important; }
+
+          /* Описание бенефитов */
+          .text-slate-600.leading-relaxed,
+          .text-slate-700.leading-relaxed {
+            font-size: 15px !important;
+          }
+
+          /* Зарплата */
+          .text-5xl, .text-6xl { font-size: 3.2rem !important; }
+        }
+      </style>
+    </head>
+
+    <body>
+      <div id="root"></div>
+
+      <script>
+        function applyFixes() {
+          // ── Кнопка выше оверлея ──
+          document.querySelectorAll('button[type="button"].w-full').forEach(btn => {
+            btn.style.position = 'relative';
+            btn.style.zIndex = '2';
+          });
+
+          // ── Email ссылка ──
+          document.querySelectorAll('a').forEach(a => {
+            if (a.href && (a.href.includes('mail.google.com') || a.href.startsWith('mailto'))) {
+              a.style.position = 'relative';
+              a.style.zIndex = '2';
+            }
+          });
+
+          // ── О нашей работе: убрать внутренние рамки карточек, оставить единый блок ──
+          const cardGrids = Array.from(document.querySelectorAll('.grid.gap-4')).filter(g => {
+            return g.querySelector('.w-9') && !g.closest('.unified-cards');
+          });
+
+          if (cardGrids.length >= 2 && !document.querySelector('.unified-cards')) {
+            const g1 = cardGrids[0];
+            const g2 = cardGrids[1];
+            if (g1.parentNode === g2.parentNode) {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'unified-cards';
+              // Один внешний контейнер — без вложенных рамок
+              wrapper.style.cssText = `
+                border-radius: 20px;
+                overflow: hidden;
+                background: rgba(255,255,255,0.05);
+              `;
+              g1.parentNode.insertBefore(wrapper, g1);
+              wrapper.appendChild(g1);
+              wrapper.appendChild(g2);
+
+              // Убираем border и background у каждой внутренней карточки
+              wrapper.querySelectorAll('.rounded-2xl').forEach((card, i) => {
+                card.style.borderRadius = '0';
+                card.style.border = 'none';
+                card.style.background = 'transparent';
+                card.style.boxShadow = 'none';
+              });
+
+              // Тонкие разделители между карточками
+              const allCards = Array.from(wrapper.querySelectorAll('.rounded-2xl'));
+              // Разделитель между строками (g1 и g2)
+              g1.style.borderBottom = '1px solid rgba(255,255,255,0.07)';
+              // Разделитель между левой и правой колонками в каждой строке
+              [g1, g2].forEach(grid => {
+                const cols = grid.querySelectorAll('.rounded-2xl');
+                if (cols.length >= 2) {
+                  cols[0].style.borderRight = '1px solid rgba(255,255,255,0.07)';
+                }
+              });
+            }
+          }
+        }
+
+        document.addEventListener('click', () => setTimeout(applyFixes, 200));
+        setTimeout(applyFixes, 600);
+        setTimeout(applyFixes, 1500);
+        const obs = new MutationObserver(() => applyFixes());
+        setTimeout(() => obs.observe(document.body, { childList: true, subtree: true }), 400);
+      </script>
+    </body>
+  </html>
