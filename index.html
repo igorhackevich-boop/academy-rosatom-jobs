@@ -1,0 +1,30 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Modern Job Listing Design</title>
+      <script type="module" crossorigin src="./assets/index-s59om0Yj.js"></script>
+      <link rel="stylesheet" crossorigin href="./assets/index-Coq4vXBm.css">
+      <style>
+        /* Вертикальный разделитель в О нашей работе */
+        .info-row > div:first-child {
+          border-right: 1px solid rgba(255,255,255,0.08) !important;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="root"></div>
+      <script>
+        function fix() {
+          document.querySelectorAll('.grid.gap-4').forEach(g => {
+            if (g.querySelector('.w-9')) g.classList.add('info-row');
+          });
+        }
+        setTimeout(fix, 500);
+        setTimeout(fix, 1500);
+        document.addEventListener('click', () => setTimeout(fix, 300));
+        new MutationObserver(fix).observe(document.documentElement, {childList:true,subtree:true});
+      </script>
+    </body>
+  </html>
