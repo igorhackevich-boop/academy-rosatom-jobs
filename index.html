@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Техническая академия Росатома · Вакансии</title>
+  <style>
+    :root{
+      --bg:#f6f8fc;
+      --text:#0f172a;
+      --muted:#5b6476;
+      --line:#dbe4f0;
+      --card:#ffffff;
+      --shadow:0 20px 50px rgba(30,41,59,.09);
+      --shadow-hover:0 28px 70px rgba(30,41,59,.14);
+      --blue1:#4f46e5; --blue2:#7c3aed;
+      --cyan1:#06b6d4; --cyan2:#2563eb;
+      --footer:#0f172a;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,#f8fbff 0%,#f6f8fc 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    a{color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+    .header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(148,163,184,.18)}
+    .header-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    .brand-badge{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#4f46e5);display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;flex-shrink:0}
+    .brand h1{margin:0;font-size:20px;line-height:1.1}
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:14px}
+    .live{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;white-space:nowrap}
+    .live-dot{width:10px;height:10px;border-radius:999px;background:#22c55e;box-shadow:0 0 0 6px rgba(34,197,94,.12)}
+
+    .hero{padding:52px 0 30px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.18);color:#2457c5;font-size:14px;font-weight:600}
+    .hero h2{font-size:clamp(40px,7vw,72px);line-height:.98;letter-spacing:-.04em;margin:18px 0 16px;text-align:center}
+    .hero h2 span{background:linear-gradient(90deg,#2563eb,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{max-width:850px;margin:0 auto;text-align:center;font-size:clamp(18px,2.2vw,22px);line-height:1.6;color:var(--muted)}
+    .hero-top{text-align:center}
+
+    .cards{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:38px 0 20px}
+    .card{position:relative;background:var(--card);border:1px solid rgba(148,163,184,.24);border-radius:30px;overflow:hidden;box-shadow:var(--shadow);transition:.3s ease}
+    .card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+    .card::before{content:"";position:absolute;inset:0;opacity:0;transition:.3s ease;pointer-events:none}
+    .card.violet::before{background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(217,70,239,.05))}
+    .card.blue::before{background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(37,99,235,.06))}
+    .card:hover::before{opacity:1}
+    .card-inner{position:relative;padding:28px}
+    .topline{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+    .iconbox{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;color:#fff;font-size:26px;flex-shrink:0;box-shadow:0 18px 30px rgba(59,130,246,.18)}
+    .violet .iconbox{background:linear-gradient(135deg,#7c3aed,#d946ef)}
+    .blue .iconbox{background:linear-gradient(135deg,#06b6d4,#2563eb)}
+    .tags{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+    .tag{padding:8px 12px;border-radius:999px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:600}
+    .card h3{margin:0;font-size:36px;line-height:1.02;letter-spacing:-.03em}
+    .dept{margin:6px 0 14px;color:#64748b;font-size:14px}
+    .desc{margin:0 0 18px;font-size:18px;line-height:1.7;color:#334155}
+    .highlights{display:grid;gap:12px;margin-bottom:22px;min-height:110px}
+    .hl{display:flex;gap:10px;align-items:flex-start;color:#475569;font-size:17px;line-height:1.55}
+    .hl-dot{margin-top:5px;width:20px;height:20px;display:grid;place-items:center;border-radius:999px;color:#fff;font-size:12px;flex-shrink:0}
+    .violet .hl-dot{background:linear-gradient(135deg,#7c3aed,#d946ef)}
+    .blue .hl-dot{background:linear-gradient(135deg,#06b6d4,#2563eb)}
+    .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 18px;border:none;border-radius:16px;font-size:17px;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s ease}
+    .btn.secondary{background:#f1f5f9;color:#334155}
+    .btn.secondary:hover{background:#e2e8f0}
+    .btn.primary.violet{background:linear-gradient(90deg,#7c3aed,#d946ef);color:#fff;box-shadow:0 18px 30px rgba(124,58,237,.25)}
+    .btn.primary.blue{background:linear-gradient(90deg,#06b6d4,#2563eb);color:#fff;box-shadow:0 18px 30px rgba(37,99,235,.2)}
+    .details{display:none;border-top:1px solid rgba(148,163,184,.18);background:rgba(248,250,252,.9);padding:26px 28px 30px}
+    .details.open{display:block}
+    .section{margin-bottom:24px}
+    .section h4{margin:0 0 12px;font-size:20px}
+    .list{display:grid;gap:12px}
+    .li{display:flex;gap:10px;align-items:flex-start;color:#334155;font-size:17px;line-height:1.6}
+    .li i{width:8px;height:8px;border-radius:999px;background:#94a3b8;margin-top:10px;flex-shrink:0}
+    .pillwrap{display:flex;flex-wrap:wrap;gap:8px}
+    .smallpill{padding:8px 12px;border-radius:12px;background:#fff;border:1px solid rgba(148,163,184,.24);font-size:13px;color:#475569}
+    .benefits{display:grid;gap:14px}
+    .benefit{display:flex;gap:14px;padding:16px;background:#fff;border:1px solid rgba(148,163,184,.2);border-radius:18px}
+    .benefit-ico{width:42px;height:42px;border-radius:14px;color:#fff;display:grid;place-items:center;flex-shrink:0}
+    .violet .benefit-ico{background:linear-gradient(135deg,#7c3aed,#d946ef)}
+    .blue .benefit-ico{background:linear-gradient(135deg,#06b6d4,#2563eb)}
+    .benefit strong{display:block;font-size:18px;margin-bottom:5px}
+    .benefit p{margin:0;color:#475569;font-size:16px;line-height:1.55}
+
+    .apply-box{background:#fff;border:1px solid rgba(148,163,184,.2);border-radius:22px;padding:18px}
+    .apply-box > p{margin:0 0 16px;color:#64748b;font-size:15px;line-height:1.6}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    .field, .textarea{width:100%;border:1px solid #dbe4f0;background:#f8fafc;border-radius:14px;padding:14px 15px;font:inherit;font-size:16px;color:#0f172a;outline:none}
+    .field:focus,.textarea:focus{background:#fff;border-color:#94a3b8}
+    .textarea{min-height:120px;resize:vertical}
+    .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .helper-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;color:#64748b;font-size:15px}
+    .helper-row .linkbtn{background:none;border:none;padding:0;color:#334155;text-decoration:underline;cursor:pointer;font:inherit;font-weight:600}
+    .helper-row a{color:#334155;text-decoration:underline;font-weight:600}
+    .status{font-size:14px;color:#2563eb;font-weight:600}
+
+    .footer{padding:20px 0 60px}
+    .footer-box{position:relative;overflow:hidden;background:linear-gradient(135deg,#0f172a,#172033 65%,#111827);border-radius:30px;color:#fff;padding:30px;box-shadow:0 30px 80px rgba(15,23,42,.16)}
+    .footer-box::before,.footer-box::after{content:"";position:absolute;border-radius:999px;filter:blur(60px);pointer-events:none}
+    .footer-box::before{right:-60px;top:-60px;width:220px;height:220px;background:rgba(59,130,246,.14)}
+    .footer-box::after{left:-80px;bottom:-70px;width:220px;height:220px;background:rgba(124,58,237,.14)}
+    .footer-grid{position:relative;display:grid;grid-template-columns:.95fr 1.05fr;gap:22px;align-items:start}
+    .footer h3{margin:0 0 16px;font-size:42px;line-height:1;letter-spacing:-.04em}
+    .footer-lead{margin:0;color:#d8e1ec;font-size:21px;line-height:1.65;max-width:700px}
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+    .mini-card,.pay-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:18px}
+    .mini-title{font-size:19px;font-weight:700;margin:0 0 6px}
+    .mini-body{margin:0;color:#cbd5e1;font-size:17px;line-height:1.6}
+    .pay-card{padding:22px}
+    .pay-top{margin-bottom:14px}
+    .pay-top h4{margin:0 0 6px;font-size:24px}
+    .pay-top p{margin:0;color:#cbd5e1;font-size:16px}
+    .salary{font-size:clamp(56px,8vw,76px);font-weight:900;line-height:.92;letter-spacing:-.05em;background:linear-gradient(90deg,#60a5fa,#818cf8,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;margin:12px 0}
+    .pay-sub{font-size:23px;color:#f8fafc;margin-bottom:4px}
+    .pay-note{font-size:18px;color:#cbd5e1}
+    .site-link{color:#93c5fd;text-decoration:underline;text-underline-offset:3px}
+
+    @media (max-width: 920px){
+      .cards,.footer-grid,.action-grid,.form-grid{grid-template-columns:1fr}
+      .mini-grid{grid-template-columns:1fr}
+      .card h3{font-size:30px}
+      .footer h3{font-size:34px}
+      .footer-lead{font-size:20px}
+      .salary{font-size:56px}
+    }
+    @media (max-width: 640px){
+      .wrap{padding:0 16px}
+      .header-row{padding:14px 0}
+      .brand h1{font-size:17px}
+      .brand p,.live{font-size:13px}
+      .hero{padding-top:34px}
+      .hero p{font-size:19px}
+      .card-inner,.details,.footer-box{padding:20px}
+      .desc,.hl,.li,.benefit p,.mini-body,.pay-note{font-size:17px}
+      .benefit strong,.mini-title{font-size:18px}
+      .btn{font-size:17px;padding:16px}
+      .section h4{font-size:19px}
+      .footer h3{font-size:30px}
+      .footer-lead{font-size:18px}
+      .salary{font-size:52px}
+      .pay-sub{font-size:20px}
+      .helper-row{font-size:14px}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="wrap header-row">
+      <div class="brand">
+        <div class="brand-badge">⚛</div>
+        <div>
+          <h1>Техническая академия Росатома</h1>
+          <p>Филиал СПБ · Открытые вакансии</p>
+        </div>
+      </div>
+      <div class="live"><span class="live-dot"></span>2 активные позиции</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div class="hero-top">
+        <div class="pill">✨ Присоединяйся к команде</div>
+        <h2>Создавай будущее <span>образования</span></h2>
+        <p>Делаем учебные продукты для специалистов атомной отрасли и соединяем в одной команде 3D, визуальный дизайн, методику и реальные инженерные знания.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card violet">
+          <div class="card-inner">
+            <div class="topline">
+              <div class="iconbox">🎬</div>
+              <div class="tags">
+                <span class="tag">Полная занятость</span>
+                <span class="tag">Офис / Гибрид</span>
+              </div>
+            </div>
+            <h3>3D-моушен дизайнер</h3>
+            <p class="dept">Образовательные технологии</p>
+            <p class="desc">Создавай 3D-визуализации и анимации, которые помогают понятно объяснять физические процессы, работу сложных механизмов и устройство оборудования.</p>
+            <div class="highlights">
+              <div class="hl"><span class="hl-dot">✓</span><span>3D-анимация для обучения и техничных презентаций</span></div>
+              <div class="hl"><span class="hl-dot">✓</span><span>Реальные задачи из атомной отрасли</span></div>
+              <div class="hl"><span class="hl-dot">✓</span><span>Работа на стыке визуала, методики и инженерной логики</span></div>
+            </div>
+            <button class="btn secondary toggle" data-target="job-3d">Посмотреть детали вакансии <span>→</span></button>
+          </div>
+          <div class="details" id="job-3d">
+            <div class="section">
+              <h4>Чем предстоит заниматься</h4>
+              <div class="list">
+                <div class="li"><i></i><span>Создавать 3D-модели промышленного оборудования: насосы, реакторы, турбины и узлы</span></div>
+                <div class="li"><i></i><span>Анимировать принципы работы, сборку и разборку механизмов</span></div>
+                <div class="li"><i></i><span>Показывать физические процессы: движение воды, пара, давления, частиц и потоков</span></div>
+                <div class="li"><i></i><span>Разрабатывать интерактивные 3D-сцены и объясняющие ролики для учебных модулей</span></div>
+                <div class="li"><i></i><span>Интегрировать визуализацию в презентации и курсы на PowerPoint + iSpring</span></div>
+                <div class="li"><i></i><span>Использовать AI-инструменты как часть рабочего пайплайна, а не как игрушку</span></div>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Что требуется</h4>
+              <div class="list">
+                <div class="li"><i></i><span>Уверенное владение Blender или другим 3D-пакетом</span></div>
+                <div class="li"><i></i><span>Опыт анимации технических объектов, узлов и механизмов</span></div>
+                <div class="li"><i></i><span>Понимание motion design и визуального объяснения</span></div>
+                <div class="li"><i></i><span>Готовность погружаться в техническую информацию и выделять в ней главное</span></div>
+                <div class="li"><i></i><span>Умение превращать сложный материал в ясный визуальный рассказ</span></div>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Будет плюсом</h4>
+              <div class="pillwrap">
+                <span class="smallpill">Промышленная визуализация</span>
+                <span class="smallpill">Обучающие продукты</span>
+                <span class="smallpill">After Effects / Premiere Pro</span>
+                <span class="smallpill">Техническое образование</span>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Что мы предлагаем</h4>
+              <div class="benefits">
+                <div class="benefit"><div class="benefit-ico">🎓</div><div><strong>Оплачиваемое обучение</strong><p>Оплачиваем курсы, конференции и рабочие инструменты для развития навыков.</p></div></div>
+                <div class="benefit"><div class="benefit-ico">💡</div><div><strong>Поддержка на старте</strong><p>Помогаем быстро войти в процессы, задачи и специфику отрасли.</p></div></div>
+                <div class="benefit"><div class="benefit-ico">👥</div><div><strong>Экспертная среда</strong><p>Работаешь вместе с инженерами и технологами над реальными производственными темами.</p></div></div>
+              </div>
+            </div>
+            <div class="section apply-box">
+              <h4>Форма отклика</h4>
+              <p>На телефоне почтовые ссылки часто ведут в странные сценарии. Поэтому здесь удобнее сначала заполнить форму, а потом выбрать, как отправить отклик.</p>
+              <div class="form-grid">
+                <input class="field" data-job="3d" data-field="name" placeholder="Имя" />
+                <input class="field" data-job="3d" data-field="contact" placeholder="Почта или Telegram" />
+              </div>
+              <div class="form-grid">
+                <input class="field" data-job="3d" data-field="portfolio" placeholder="Ссылка на портфолио" />
+                <input class="field" data-job="3d" data-field="resume" placeholder="Ссылка на резюме" />
+              </div>
+              <textarea class="textarea" data-job="3d" data-field="message" placeholder="Коротко о себе или о релевантном опыте"></textarea>
+              <div class="action-grid">
+                <a class="btn primary violet gmail-link" data-job="3d" href="#">Открыть письмо в Gmail ↗</a>
+                <button class="btn secondary copy-text" data-job="3d" type="button">Скопировать текст отклика</button>
+              </div>
+              <div class="helper-row">
+                <button class="linkbtn copy-email" data-job="3d" type="button">Скопировать почту для отклика</button>
+                <span>или</span>
+                <a class="mailto-link" data-job="3d" href="#">отправить на igor.hackevich@gmail.com</a>
+                <span class="status" id="status-3d"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card blue">
+          <div class="card-inner">
+            <div class="topline">
+              <div class="iconbox">🧩</div>
+              <div class="tags">
+                <span class="tag">Полная занятость</span>
+                <span class="tag">Офис / Гибрид</span>
+              </div>
+            </div>
+            <h3>Дизайнер образовательных курсов</h3>
+            <p class="dept">Образовательные технологии</p>
+            <p class="desc">Превращай сложную техническую информацию в ясные курсы, презентации, схемы и визуальные объяснения для специалистов атомной отрасли.</p>
+            <div class="highlights">
+              <div class="hl"><span class="hl-dot">✓</span><span>Полный цикл работы над учебным материалом</span></div>
+              <div class="hl"><span class="hl-dot">✓</span><span>Дизайн, методика и структура в одной роли</span></div>
+              <div class="hl"><span class="hl-dot">✓</span><span>Заметное влияние на итоговый результат</span></div>
+            </div>
+            <button class="btn secondary toggle" data-target="job-course">Посмотреть детали вакансии <span>→</span></button>
+          </div>
+          <div class="details" id="job-course">
+            <div class="section">
+              <h4>Чем предстоит заниматься</h4>
+              <div class="list">
+                <div class="li"><i></i><span>Разрабатывать визуальную концепцию и учебную логику материалов</span></div>
+                <div class="li"><i></i><span>Структурировать сложную техническую информацию и выделять главное</span></div>
+                <div class="li"><i></i><span>Создавать схемы, иллюстрации, инфографику и объясняющие экраны</span></div>
+                <div class="li"><i></i><span>Собирать курсы и презентации в PowerPoint с надстройкой iSpring</span></div>
+                <div class="li"><i></i><span>Подключать AI-инструменты для озвучки, поиска решений и ускорения продакшна</span></div>
+                <div class="li"><i></i><span>Работать с экспертами так, чтобы сложная тема становилась понятной без потери смысла</span></div>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Что требуется</h4>
+              <div class="list">
+                <div class="li"><i></i><span>Сильный PowerPoint с анимацией и логикой экранов</span></div>
+                <div class="li"><i></i><span>Figma / Illustrator для иллюстраций, иконок и визуальных систем</span></div>
+                <div class="li"><i></i><span>Навык инфографики и визуализации данных</span></div>
+                <div class="li"><i></i><span>Умение перерабатывать сложнотехнический контент, а не просто украшать слайды</span></div>
+                <div class="li"><i></i><span>Понимание методической части и структуры объяснения</span></div>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Будет плюсом</h4>
+              <div class="pillwrap">
+                <span class="smallpill">iSpring / Articulate</span>
+                <span class="smallpill">Инженерные темы</span>
+                <span class="smallpill">Обучающий контент</span>
+                <span class="smallpill">Видеоинструменты</span>
+              </div>
+            </div>
+            <div class="section">
+              <h4>Что мы предлагаем</h4>
+              <div class="benefits">
+                <div class="benefit"><div class="benefit-ico">🚀</div><div><strong>Влияние на результат</strong><p>Не просто оформляешь, а формируешь визуальное и методическое решение целиком.</p></div></div>
+                <div class="benefit"><div class="benefit-ico">👥</div><div><strong>Экспертная среда</strong><p>Работаешь вместе с инженерами и технологами над темами, которые реально применяются в отрасли.</p></div></div>
+                <div class="benefit"><div class="benefit-ico">🎓</div><div><strong>Оплачиваемое обучение</strong><p>Оплачиваем курсы, конференции и инструменты для профессионального роста.</p></div></div>
+              </div>
+            </div>
+            <div class="section apply-box">
+              <h4>Форма отклика</h4>
+              <p>На телефоне почтовые ссылки часто ведут в странные сценарии. Поэтому здесь удобнее сначала заполнить форму, а потом выбрать, как отправить отклик.</p>
+              <div class="form-grid">
+                <input class="field" data-job="course" data-field="name" placeholder="Имя" />
+                <input class="field" data-job="course" data-field="contact" placeholder="Почта или Telegram" />
+              </div>
+              <div class="form-grid">
+                <input class="field" data-job="course" data-field="portfolio" placeholder="Ссылка на портфолио" />
+                <input class="field" data-job="course" data-field="resume" placeholder="Ссылка на резюме" />
+              </div>
+              <textarea class="textarea" data-job="course" data-field="message" placeholder="Коротко о себе или о релевантном опыте"></textarea>
+              <div class="action-grid">
+                <a class="btn primary blue gmail-link" data-job="course" href="#">Открыть письмо в Gmail ↗</a>
+                <button class="btn secondary copy-text" data-job="course" type="button">Скопировать текст отклика</button>
+              </div>
+              <div class="helper-row">
+                <button class="linkbtn copy-email" data-job="course" type="button">Скопировать почту для отклика</button>
+                <span>или</span>
+                <a class="mailto-link" data-job="course" href="#">отправить на igor.hackevich@gmail.com</a>
+                <span class="status" id="status-course"></span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="footer wrap">
+      <div class="footer-box">
+        <div class="footer-grid">
+          <div>
+            <h3>О нашей работе</h3>
+            <p class="footer-lead">Делаем учебные продукты для специалистов атомной отрасли и превращаем сложные инженерные темы в понятные курсы, презентации, схемы и 3D-визуализации.</p>
+            <div class="mini-grid">
+              <div class="mini-card">
+                <div class="mini-title">Официальное трудоустройство</div>
+                <p class="mini-body">Белая зарплата и полный соцпакет.</p>
+              </div>
+              <div class="mini-card">
+                <div class="mini-title">Формат работы</div>
+                <p class="mini-body">Офис или гибридный график.</p>
+              </div>
+            </div>
+          </div>
+          <div class="mini-grid">
+            <div class="pay-card" style="grid-column:1/-1">
+              <div class="pay-top">
+                <h4>Доход и премии</h4>
+                <p>Прозрачные условия без мелкого шрифта</p>
+              </div>
+              <div class="salary">110 000 ₽</div>
+              <div class="pay-sub">в месяц до вычета НДФЛ</div>
+              <div class="pay-note">Плюс премия по итогам года</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-title">Где мы находимся</div>
+              <p class="mini-body">Аэродромная ул., 4, лит. А<br>Метро Пионерская, Чёрная речка, Старая Деревня</p>
+            </div>
+            <div class="mini-card">
+              <div class="mini-title">Подробнее о проектах</div>
+              <p class="mini-body"><a class="site-link" href="https://rosatomtech.ru" target="_blank" rel="noopener noreferrer">rosatomtech.ru</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const APPLY_EMAIL = 'igor.hackevich@gmail.com';
+    const forms = {
+      '3d': { title: '3D-моушен дизайнер', name:'', contact:'', portfolio:'', resume:'', message:'' },
+      'course': { title: 'Дизайнер образовательных курсов', name:'', contact:'', portfolio:'', resume:'', message:'' },
+    };
+
+    function buildDraft(jobKey){
+      const f = forms[jobKey];
+      const subject = `Отклик на вакансию: ${f.title}`;
+      const body = [
+        'Здравствуйте!',
+        '',
+        `Откликаюсь на вакансию «${f.title}».`,
+        '',
+        `Имя: ${f.name || '—'}`,
+        `Контакты: ${f.contact || '—'}`,
+        `Ссылка на портфолио: ${f.portfolio || '—'}`,
+        `Ссылка на резюме: ${f.resume || '—'}`,
+        '',
+        'Комментарий:',
+        f.message || '—'
+      ].join('\n');
+      return {
+        body,
+        gmail:`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(APPLY_EMAIL)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+        mailto:`mailto:${APPLY_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      }
+    }
+
+    function refreshLinks(jobKey){
+      const draft = buildDraft(jobKey);
+      document.querySelector(`.gmail-link[data-job="${jobKey}"]`).href = draft.gmail;
+      document.querySelector(`.mailto-link[data-job="${jobKey}"]`).href = draft.mailto;
+      return draft;
+    }
+
+    function setStatus(jobKey, text){
+      const el = document.getElementById(`status-${jobKey}`);
+      el.textContent = text;
+      setTimeout(() => { if (el.textContent === text) el.textContent = ''; }, 1800);
+    }
+
+    document.querySelectorAll('.toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const panel = document.getElementById(btn.dataset.target);
+        const open = panel.classList.contains('open');
+        document.querySelectorAll('.details').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.toggle').forEach(b => b.innerHTML = 'Посмотреть детали вакансии <span>→</span>');
+        if (!open) {
+          panel.classList.add('open');
+          btn.innerHTML = 'Свернуть детали <span>↓</span>';
+        }
+      })
+    });
+
+    document.querySelectorAll('[data-field]').forEach(input => {
+      input.addEventListener('input', e => {
+        const { job, field } = e.target.dataset;
+        forms[job][field] = e.target.value;
+        refreshLinks(job);
+      });
+    });
+
+    document.querySelectorAll('.copy-text').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const job = btn.dataset.job;
+        const draft = refreshLinks(job);
+        try { await navigator.clipboard.writeText(draft.body); setStatus(job, 'Текст скопирован'); }
+        catch { window.prompt('Скопируй вручную:', draft.body); }
+      });
+    });
+
+    document.querySelectorAll('.copy-email').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const job = btn.dataset.job;
+        try { await navigator.clipboard.writeText(APPLY_EMAIL); setStatus(job, 'Почта скопирована'); }
+        catch { window.prompt('Скопируй вручную:', APPLY_EMAIL); }
+      });
+    });
+
+    Object.keys(forms).forEach(refreshLinks);
+  </script>
+</body>
+</html>
