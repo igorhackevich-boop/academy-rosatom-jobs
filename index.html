@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Техническая академия Росатома — вакансии</title>
+  <style>
+    :root{
+      --bg:#eef3fb;
+      --card:#ffffff;
+      --text:#0f1837;
+      --muted:#5d6b87;
+      --line:#dfe7f4;
+      --blue:#3f67ff;
+      --cyan:#14b8e6;
+      --violet:#8c46ff;
+      --fuchsia:#d52ce8;
+      --dark1:#0f1f53;
+      --dark2:#222e6d;
+      --dark3:#2a2f7f;
+      --radius:28px;
+      --shadow:0 18px 50px rgba(34,55,122,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1200px,calc(100% - 32px));margin:0 auto}
+    .hero{padding:42px 0 24px;text-align:center}
+    .hero h1{margin:0 0 18px;font-size:clamp(44px,7vw,76px);line-height:.98;font-weight:900;letter-spacing:-.05em}
+    .hero .accent{background:linear-gradient(90deg,var(--blue),#6177ff 45%,#7a5cff 72%,#a04cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{margin:0 auto;max-width:920px;font-size:clamp(21px,2.2vw,26px);line-height:1.45;color:#53627f}
+    .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;padding:22px 0 54px}
+    .job-card{background:var(--card);border:1px solid #dde6f4;border-radius:34px;box-shadow:var(--shadow);padding:26px 28px 26px;display:flex;flex-direction:column;min-height:100%}
+    .job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:14px}
+    .job-icon{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
+    .job-icon svg{width:30px;height:30px;stroke:currentColor}
+    .grad-violet{background:linear-gradient(135deg,var(--violet),var(--fuchsia))}
+    .grad-blue{background:linear-gradient(135deg,var(--cyan),var(--blue))}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .badge{padding:9px 14px;border-radius:999px;background:#f2f5fb;color:#55627c;font-size:14px;font-weight:700;white-space:nowrap}
+    .job-title{margin:0;font-size:clamp(32px,3.3vw,54px);line-height:.95;font-weight:900;letter-spacing:-.04em}
+    .job-dept{font-size:20px;color:#60708d;margin:6px 0 14px}
+    .job-desc{font-size:26px;line-height:1.5;color:#55627c;margin:0 0 18px}
+    .checklist{display:grid;gap:12px;margin:0 0 22px;padding:0;list-style:none}
+    .checklist li{display:flex;align-items:flex-start;gap:12px;font-size:16px;color:#394968}
+    .dot{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;color:#fff;margin-top:1px;font-size:13px;font-weight:800}
+    .card-actions{margin-top:auto;display:grid;gap:12px}
+    .btn{appearance:none;border:0;cursor:pointer;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 20px;font-weight:800;font-size:18px;transition:.2s ease;touch-action:manipulation}
+    .btn:hover{transform:translateY(-1px)}
+    .btn:active{transform:translateY(0) scale(.99)}
+    .btn-secondary{background:#eef2f8;color:#30405e}
+    .btn-primary{background:linear-gradient(90deg,var(--cyan),var(--blue) 58%,#5a5df8);color:#fff;box-shadow:0 10px 30px rgba(65,101,255,.22)}
+    .arrow{font-size:22px;line-height:1}
+    .job-more{display:none;padding-top:10px;border-top:1px solid #e6ecf6}
+    .job-more.open{display:block}
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0 16px}
+    .panel-title{font-size:18px;font-weight:800;margin:0 0 10px}
+    .panel-list{list-style:none;padding:0;margin:0;display:grid;gap:9px;color:#51607d;font-size:15px}
+    .benefit-grid{display:grid;gap:14px;margin-top:16px}
+    .benefit{display:flex;gap:14px;align-items:flex-start;padding:18px;border:1px solid #e4ebf7;border-radius:22px;background:#fcfdff}
+    .benefit .small-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:0 0 auto}
+    .benefit h4{margin:0 0 4px;font-size:20px}
+    .benefit p{margin:0;font-size:16px;color:#5c6b87}
+
+    .apply-section{padding:0 0 52px}
+    .apply-wrap{background:#fff;border:1px solid #dde6f4;border-radius:34px;box-shadow:var(--shadow);padding:28px 30px}
+    .apply-head{display:grid;gap:8px;margin-bottom:22px}
+    .apply-head h2{margin:0;font-size:34px;line-height:1;font-weight:900;letter-spacing:-.03em}
+    .apply-head p{margin:0;color:#5b6985;font-size:18px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .field, select, textarea{width:100%;border:1px solid #d9e2f1;border-radius:18px;padding:16px 18px;font:inherit;background:#fbfcff;color:#1c2542;outline:none}
+    .field:focus, select:focus, textarea:focus{border-color:#8aa5ff;box-shadow:0 0 0 4px rgba(63,103,255,.1)}
+    textarea{min-height:130px;resize:vertical}
+    .form-row{display:grid;gap:16px}
+    .helper{font-size:14px;color:#6b7893;margin-top:10px}
+    .helper a{color:#315dff;text-decoration:underline;text-underline-offset:3px}
+
+    .about{padding:10px 0 70px}
+    .about-box{background:linear-gradient(135deg,#0f1f53 0%,#222d67 55%,#2a3178 100%);border-radius:38px;padding:42px 42px 36px;color:#fff;position:relative;overflow:hidden;box-shadow:0 22px 60px rgba(24,35,82,.18)}
+    .about-box::before,.about-box::after{content:"";position:absolute;border-radius:999px;filter:blur(50px);opacity:.22;pointer-events:none}
+    .about-box::before{width:260px;height:260px;background:#5e51ff;left:-40px;bottom:-120px}
+    .about-box::after{width:220px;height:220px;background:#6b85ff;right:-60px;top:-40px}
+    .about-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}
+    .about h3{margin:0 0 18px;font-size:clamp(34px,3vw,52px);line-height:1;font-weight:900;letter-spacing:-.04em}
+    .about-text{font-size:18px;line-height:1.6;color:#dfe8fb;max-width:620px}
+    .about-text p{margin:0 0 14px}
+    .right-stack{display:grid;gap:18px}
+    .mini-item{display:flex;gap:14px;align-items:flex-start}
+    .mini-ico{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;flex:0 0 auto}
+    .mini-ico svg{width:22px;height:22px;stroke:#fff}
+    .mini-item h4{margin:0 0 4px;font-size:20px}
+    .mini-item p{margin:0;color:#c6d3f1;font-size:17px}
+    .divider{height:1px;background:rgba(255,255,255,.14);margin:18px 0 8px}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start}
+    .info-block h5{margin:0 0 8px;font-size:16px;letter-spacing:.01em;color:#d5def5;text-transform:uppercase}
+    .info-block p,.info-block a{margin:0;font-size:18px;line-height:1.5;color:#fff}
+    .salary{display:flex;flex-direction:column;gap:4px}
+    .salary-amount{font-size:clamp(38px,4vw,56px);line-height:.95;font-weight:900;letter-spacing:-.05em;background:linear-gradient(90deg,#fff 0%,#9bb0ff 35%,#6c79ff 62%,#57b8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .salary-note{font-size:16px;color:#d2dbf2}
+
+    .footer-space{height:20px}
+
+    @media (max-width: 1024px){
+      .cards{grid-template-columns:1fr}
+      .about-grid{grid-template-columns:1fr}
+      .info-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 740px){
+      .container{width:min(100% - 22px, 720px)}
+      .hero{padding-top:26px}
+      .hero p{font-size:19px}
+      .job-card{padding:20px 18px 18px;border-radius:28px}
+      .job-top{flex-direction:column;align-items:flex-start;gap:14px}
+      .badges{justify-content:flex-start}
+      .job-title{font-size:30px}
+      .job-dept{font-size:16px}
+      .job-desc{font-size:17px}
+      .checklist li{font-size:15px}
+      .btn{font-size:17px;padding:17px 16px}
+      .cols,.form-grid{grid-template-columns:1fr}
+      .apply-wrap{padding:22px 18px;border-radius:28px}
+      .apply-head h2{font-size:28px}
+      .apply-head p{font-size:17px}
+      .about-box{padding:28px 18px;border-radius:28px}
+      .about h3{font-size:30px}
+      .about-text{font-size:17px}
+      .mini-item h4{font-size:18px}
+      .mini-item p,.info-block p,.info-block a{font-size:16px}
+      .salary-amount{font-size:42px}
+      .benefit h4{font-size:18px}
+      .benefit p{font-size:15px}
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Создавай будущее <span class="accent">образования</span></h1>
+        <p>Делаем учебные продукты для специалистов атомной отрасли и соединяем в одной команде 3D, визуальный дизайн, методику и реальные инженерные знания.</p>
+      </div>
+    </section>
+
+    <section class="cards">
+      <div class="container cards">
+        <article class="job-card" data-vacancy="3D-моушен дизайнер">
+          <div class="job-top">
+            <div class="job-icon grad-violet"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 7h4l2 2h10v8H4z"></path><path d="m14 14 2 2 4-4"></path></svg></div>
+            <div class="badges"><span class="badge">Полная занятость</span><span class="badge">Офис / Гибрид</span></div>
+          </div>
+          <h2 class="job-title">3D-моушен дизайнер</h2>
+          <div class="job-dept">Образовательные технологии</div>
+          <p class="job-desc">Создавай 3D-визуализации и анимации, которые помогают понятно объяснять физические процессы, работу сложных механизмов и устройство оборудования.</p>
+          <ul class="checklist">
+            <li><span class="dot grad-violet">✓</span><span>3D-анимация для обучения и технических презентаций</span></li>
+            <li><span class="dot grad-violet">✓</span><span>Реальные задачи из атомной отрасли</span></li>
+            <li><span class="dot grad-violet">✓</span><span>Работа на стыке визуала, методики и инженерной логики</span></li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn btn-secondary toggle-details" type="button">Подробнее о вакансии <span class="arrow">→</span></button>
+            <a class="btn btn-primary apply-link" href="#apply">Откликнуться <span class="arrow">→</span></a>
+          </div>
+          <div class="job-more">
+            <div class="cols">
+              <div>
+                <h3 class="panel-title">Что делать</h3>
+                <ul class="panel-list">
+                  <li>Моделировать и анимировать технические объекты и процессы</li>
+                  <li>Показывать работу оборудования, сборку и разборку узлов</li>
+                  <li>Делать ролики и визуальные объяснения для курсов и презентаций</li>
+                  <li>Интегрировать материалы в обучающие SCORM-модули</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="panel-title">Что важно</h3>
+                <ul class="panel-list">
+                  <li>Уверенный Blender или аналогичный 3D-пакет</li>
+                  <li>Опыт визуализации механизмов и технических объектов</li>
+                  <li>Понимание motion design и логики объясняющей анимации</li>
+                  <li>Готовность разбираться в инженерном материале</li>
+                </ul>
+              </div>
+            </div>
+            <div class="benefit-grid">
+              <div class="benefit"><div class="small-icon grad-violet"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 3v18"></path><path d="M7 8h5a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h8"></path></svg></div><div><h4>Влияние на результат</h4><p>Видно, как твоя визуализация помогает людям понимать сложные процессы и оборудование.</p></div></div>
+              <div class="benefit"><div class="small-icon grad-violet"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="9"></circle></svg></div><div><h4>Работа с экспертами</h4><p>Получаешь содержание и обратную связь от инженеров и технологов Росатома.</p></div></div>
+              <div class="benefit"><div class="small-icon grad-violet"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 12l8-5 8 5-8 5-8-5Z"></path><path d="M8 14v4c0 .6 1.8 2 4 2s4-1.4 4-2v-4"></path></svg></div><div><h4>Оплачиваемое обучение</h4><p>Оплачиваем курсы, конференции и рабочие инструменты для развития навыков.</p></div></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="job-card" data-vacancy="Дизайнер образовательных курсов">
+          <div class="job-top">
+            <div class="job-icon grad-blue"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 12h6v8H4z"></path><path d="M14 4h6v16h-6z"></path><path d="M10 10h4v4h-4z"></path></svg></div>
+            <div class="badges"><span class="badge">Полная занятость</span><span class="badge">Офис / Гибрид</span></div>
+          </div>
+          <h2 class="job-title">Дизайнер образовательных курсов</h2>
+          <div class="job-dept">Образовательные технологии</div>
+          <p class="job-desc">Превращай сложную техническую информацию в ясные курсы, презентации, схемы и визуальные объяснения для специалистов атомной отрасли.</p>
+          <ul class="checklist">
+            <li><span class="dot grad-blue">✓</span><span>Полный цикл работы над учебным материалом</span></li>
+            <li><span class="dot grad-blue">✓</span><span>Дизайн, методика и структура в одной роли</span></li>
+            <li><span class="dot grad-blue">✓</span><span>Заметное влияние на итоговый результат</span></li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn btn-secondary toggle-details" type="button">Подробнее о вакансии <span class="arrow">→</span></button>
+            <a class="btn btn-primary apply-link" href="#apply">Откликнуться <span class="arrow">→</span></a>
+          </div>
+          <div class="job-more">
+            <div class="cols">
+              <div>
+                <h3 class="panel-title">Что делать</h3>
+                <ul class="panel-list">
+                  <li>Структурировать технический материал и превращать его в курс</li>
+                  <li>Собирать презентации, схемы, иллюстрации и инфографику</li>
+                  <li>Работать в PowerPoint и iSpring</li>
+                  <li>Использовать AI-инструменты для ускорения производства</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="panel-title">Что важно</h3>
+                <ul class="panel-list">
+                  <li>Сильный PowerPoint и внимание к визуальной логике</li>
+                  <li>Навыки структурирования сложной информации</li>
+                  <li>Понимание педагогического дизайна</li>
+                  <li>Готовность погружаться в технические темы</li>
+                </ul>
+              </div>
+            </div>
+            <div class="benefit-grid">
+              <div class="benefit"><div class="small-icon grad-blue"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M4 12l8-5 8 5-8 5-8-5Z"></path><path d="M8 14v4c0 .6 1.8 2 4 2s4-1.4 4-2v-4"></path></svg></div><div><h4>Оплачиваемое обучение</h4><p>Оплачиваем курсы, конференции и рабочие инструменты для развития навыков.</p></div></div>
+              <div class="benefit"><div class="small-icon grad-blue"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M15 7a4 4 0 1 1-6 0"></path><path d="M17 19a5 5 0 0 0-10 0"></path><path d="M19 10a3 3 0 1 1 0 6"></path></svg></div><div><h4>Экспертная среда</h4><p>Работаешь вместе с инженерами и технологами Росатома над реальными задачами.</p></div></div>
+              <div class="benefit"><div class="small-icon grad-blue"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4Z"></path></svg></div><div><h4>Влияние на результат</h4><p>Не просто оформляешь материалы, а задаёшь визуальную и методическую логику продукта.</p></div></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="apply" class="apply-section">
+      <div class="container">
+        <div class="apply-wrap">
+          <div class="apply-head">
+            <h2>Отклик на вакансию</h2>
+            <p>Заполни короткую форму. После отправки отклик придёт на почту <strong>igor.hackevich@gmail.com</strong>. На телефоне это работает стабильнее, чем открывать почтовые ссылки вручную.</p>
+          </div>
+          <form action="https://formsubmit.co/igor.hackevich@gmail.com" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="Новый отклик с сайта academy-rosatom-jobs">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value="https://igorhackevich-boop.github.io/academy-rosatom-jobs/#apply">
+            <input type="hidden" name="Вакансия" id="vacancy-input" value="Не выбрана">
+            <div class="form-grid">
+              <input class="field" type="text" name="Имя" placeholder="Имя" required>
+              <input class="field" type="text" name="Контакты" placeholder="Почта или Telegram" required>
+              <input class="field" type="url" name="Портфолио" placeholder="Ссылка на портфолио" required>
+              <input class="field" type="url" name="Резюме" placeholder="Ссылка на резюме">
+            </div>
+            <div class="form-row">
+              <textarea name="О себе" placeholder="Коротко о себе или релевантном опыте"></textarea>
+              <button class="btn btn-primary" type="submit">Отправить отклик <span class="arrow">→</span></button>
+            </div>
+            <div class="helper">Или отправь письмо вручную на <a href="mailto:igor.hackevich@gmail.com">igor.hackevich@gmail.com</a>.</div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="container">
+        <div class="about-box">
+          <div class="about-grid">
+            <div>
+              <h3>О нашей работе</h3>
+              <div class="about-text">
+                <p>Мы создаём образовательные курсы для специалистов атомной отрасли и передаём знания через понятные визуальные и интерактивные форматы.</p>
+                <p>В одной команде соединяем визуальный дизайн, 3D-анимацию, педагогический дизайн и реальные инженерные знания, чтобы сложные темы превращались в рабочие учебные продукты.</p>
+              </div>
+            </div>
+            <div class="right-stack">
+              <div class="mini-item"><div class="mini-ico"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M8 5V3"></path><path d="M16 5V3"></path></svg></div><div><h4>Официальное трудоустройство</h4><p>Белая зарплата, полный соцпакет</p></div></div>
+              <div class="mini-item"><div class="mini-ico"><svg fill="none" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v5l3 2"></path></svg></div><div><h4>Гибкий формат</h4><p>Офис или гибридный график работы</p></div></div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="info-grid">
+            <div class="info-block">
+              <h5>Офис</h5>
+              <p>Аэродромная ул., 4, лит. А<br>Метро Пионерская, Чёрная речка, Старая Деревня</p>
+            </div>
+            <div class="info-block salary">
+              <h5>Доход</h5>
+              <div class="salary-amount">110 000 ₽</div>
+              <div class="salary-note">в месяц до вычета НДФЛ<br>+ премия по итогам года</div>
+            </div>
+            <div class="info-block">
+              <h5>Подробнее о проектах</h5>
+              <a href="https://rosatomtech.ru" target="_blank" rel="noopener noreferrer">rosatomtech.ru</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-space"></div>
+  </main>
+  <script>
+    document.querySelectorAll('.toggle-details').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const card = btn.closest('.job-card');
+        const more = card.querySelector('.job-more');
+        const opened = more.classList.toggle('open');
+        btn.innerHTML = opened ? 'Скрыть детали <span class="arrow">→</span>' : 'Подробнее о вакансии <span class="arrow">→</span>';
+      });
+    });
+
+    const vacancyInput = document.getElementById('vacancy-input');
+    document.querySelectorAll('.apply-link').forEach(function(link){
+      link.addEventListener('click', function(){
+        const card = link.closest('.job-card');
+        const vacancy = card.getAttribute('data-vacancy');
+        vacancyInput.value = vacancy;
+      });
+    });
+  </script>
+</body>
+</html>
